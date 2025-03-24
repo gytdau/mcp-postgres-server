@@ -1,0 +1,49 @@
+# Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
+
+startCommand:
+  type: stdio
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - pgHost
+      - pgUser
+      - pgPassword
+      - pgDatabase
+    properties:
+      pgHost:
+        type: string
+        description: Hostname for the PostgreSQL server
+      pgPort:
+        type: number
+        description: Port for the PostgreSQL server
+        default: 5432
+      pgUser:
+        type: string
+        description: PostgreSQL user name
+      pgPassword:
+        type: string
+        description: PostgreSQL user's password
+      pgDatabase:
+        type: string
+        description: PostgreSQL database name
+  commandFunction:
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
+    |-
+    (config) => ({
+      command: 'node',
+      args: ['build/index.js'],
+      env: {
+        PG_HOST: config.pgHost,
+        PG_PORT: config.pgPort || 5432,
+        PG_USER: config.pgUser,
+        PG_PASSWORD: config.pgPassword,
+        PG_DATABASE: config.pgDatabase
+      }
+    })
+  exampleConfig:
+    pgHost: localhost
+    pgPort: 5432
+    pgUser: example_user
+    pgPassword: example_password
+    pgDatabase: example_db
