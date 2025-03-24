@@ -24,6 +24,7 @@ The server requires the following environment variables:
 {
   "mcpServers": {
     "postgres": {
+      "type": "stdio",
       "command": "npx",
       "args": ["-y", "mcp-postgres-server"],
       "env": {
